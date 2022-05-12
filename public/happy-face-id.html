@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="mediapipe/face_mesh.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/knn-classifier"></script>
+  <link href="css/face-id.css" rel="stylesheet" />
+  <title>Happy Face Id</title>
+</head>
+
+<body>
+  <div class="lock">
+    <h1>Please Smile</h1>
+  </div>
+  <div class="container">
+    <video class="input_video"></video>
+    <canvas class="output_canvas" width="1280px" height="720px"></canvas>
+    <div class="training">
+      <button class="add_train_samples">Add Left Smile Train Samples</button>
+      <button class="add_train_samples">Add Right Smile Train Samples</button><br>
+      <button class="add_train_samples">Add Left Normal Train Samples</button>
+      <button class="add_train_samples">Add Right Normal Train Samples</button>
+      <button class="add_train_samples">Add Mid Smile Train Samples</button>
+      <button class="add_train_samples">Add Mid Normal Train Samples</button>
+    </div>
+
+  </div>
+  <script src="js/training-samples.js"></script>
+  <script src="js/face-id.js"></script>
+</body>
+</html>

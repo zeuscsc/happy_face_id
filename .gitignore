@@ -1,0 +1,14 @@
+venv_*
+assets
+datasets*
+yolo*
+__pycache__
+backup
+model
+mobilenet_v2*
+faces
+test
+ai_playground
+unet_model*
+uploads
+mediapipe
