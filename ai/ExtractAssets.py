@@ -2,6 +2,8 @@ import os
 import cv2
 import mediapipe as mp
 import numpy as np
+from tqdm import tqdm
+
 mp_face_detection = mp.solutions.face_detection
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -10,14 +12,23 @@ mp_face_mesh = mp.solutions.face_mesh
 IMAGE_FILES = ["ORIGINAL_IMAGE.jpg"]
 IMAGE_FILES = []
 assets_path="assets"
+assets_length=0
+print("Getting assets total length.")
+for i, (dirpath, dirnames, filenames) in enumerate(os.walk(assets_path)):
+    if dirpath is not assets_path:
+        for f in filenames:
+            assets_length+=1
 with mp_face_detection.FaceDetection(
     model_selection=1, min_detection_confidence=0.5) as face_detection:
+    print(f"Going to Extract {assets_length} Faces")
+    pbar = tqdm(total=assets_length)
     for i, (dirpath, dirnames, filenames) in enumerate(os.walk(assets_path)):
         if dirpath is not assets_path:
             dirpath=dirpath.replace("\\","/")
             dirpath_components = dirpath.split("/")
             label = dirpath_components[-1]
             for f in filenames:
+                pbar.update(1)
                 file_path = os.path.join(dirpath, f)
                 # IMAGE_FILES.append(file_path)
                 image = cv2.imread(file_path)
@@ -47,3 +58,5 @@ with mp_face_detection.FaceDetection(
                     if crop_height<120 or crop_width<120:
                         continue
                     cv2.imwrite(f"datasets/{label}/{f}_({j}).jpg", crop_img)
+
+    pbar.close()

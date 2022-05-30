@@ -1,5 +1,6 @@
 const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
+const loadingScreen=document.getElementsByClassName('loading_screen')[0];
 const lock = document.getElementsByClassName('lock')[0];
 const canvasCtx = canvasElement.getContext('2d');
 const classifier = knnClassifier.create();
@@ -8,9 +9,11 @@ const MOVING_AVERAGE_LENGTH=10
 let normalizedLandmarks=[];
 let averageFacialExpression=5;
 let initialized=false;
-let hasLeftSmile=false;
-let hasRightSmile=false;
+let hasLeftSmile=true;
+let hasRightSmile=true;
 let detecting=false;
+let userFound=false;
+let user=null;
 (function trainingButtonEvents(){
   let id=0
   for(const button of add_train_samples_buttons){
@@ -41,15 +44,37 @@ let detecting=false;
   }
 })();
 async function identityClassifier(image){
-  detecting=true;
+  // identity="Zeus"
   let image_base64 = image.toDataURL('image/jpeg').replace(/^data:image\/jpeg;base64,/, "");
-  let results=await fetch("http://127.0.0.1:8000/get-identity", {
+  let results=await fetch("http://localhost:8080/login", {
     method: "POST",
-    body: image_base64
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({"image_base64":image_base64})
   });
-  let identity=await results.json();
-  console.log(identity)
-  detecting=false;
+  user=await results.json();
+  console.log(user)
+  if(user&&user.username!=="Unknown"){
+    loadingScreen.style.display="none";
+    const profile_banner=document.getElementById("profile_banner");
+    const profile=document.getElementById("profile");
+    const displayName=document.getElementById("username");
+    const job_title=document.getElementById("job_title");
+    const articles_count=document.getElementById("articles_count");
+    const followers_count=document.getElementById("followers_count");
+    const following_count=document.getElementById("following_count");
+    profile_banner.src=`profiles/${user.username}-Banner.jpg`;
+    profile.src=`profiles/${user.username}.jpg`;
+    displayName.textContent=user.username;
+    job_title.textContent=user.job_title;
+    articles_count.textContent=user.articles_count;
+    followers_count.textContent=user.followers_count;
+    following_count.textContent=user.following_count;
+    userFound=true;
+  }
+  if(!userFound)
+    detecting=false;
 }
 async function detectFacialExpression(image,normalizedLandmarks){
   if(initialized){
@@ -62,27 +87,21 @@ async function detectFacialExpression(image,normalizedLandmarks){
       hasLeftSmile=true;
     if(facialExpression==1)
       hasRightSmile=true;
-    if((facialExpression===4||facialExpression===0||facialExpression===1)&&hasLeftSmile&&hasRightSmile){
+    if((facialExpression===4)&&hasLeftSmile&&hasRightSmile){
         lock.style.display="none";
-        if(!detecting)
-          identityClassifier(image)
-        // const imageToBlob=new Promise((resolve, reject) =>{
-        //   image.toBlob(async (blob)=>{
-        //     resolve(blob);
-        //   },'image/jpeg',1);
-        // });
-        // const blob=await imageToBlob;
-        // const url = URL.createObjectURL(blob);
-        // console.log(url);
-        // let results=await fetch("http://127.0.0.1:8000/test", {
-        //   method: "POST",
-        //   body: url
-        // });
+        videoElement.style.display="none";
+        if(!detecting){
+          detecting=true;
+          setTimeout(()=>{
+            identityClassifier(image)
+          },1000)
+        }
     }
-    if(facialExpression===5){
+    if(facialExpression===5&&user===null){
         lock.style.display="block";
-        hasLeftSmile=false;
-        hasRightSmile=false;
+        videoElement.style.display="block";
+        // hasLeftSmile=false;
+        // hasRightSmile=false;
     }
   }
 }

@@ -46,11 +46,11 @@ def predict_image(img)->str:
         "This image most likely belongs to {} with a {:.2f} percent confidence.{}"
         .format(os.path.basename((class_names[np.argmax(score)])), 100 * np.max(score),score)
     )
-    class_name=os.path.basename((class_names[np.argmax(score)]))
-    print(class_name)
-    return class_name
-    # return JSON.dumps({"classification":class_name, "score":score})
-    # return f'{"class":{class_name},"score":{score}}'
+    classname=os.path.basename((class_names[np.argmax(score)]))
+    result=dict()
+    result["classname"]=classname
+    result["confidence"]=f"{np.max(score)}"
+    return result
 
 @app.post("/get-identity")
 async def get_identity(request):

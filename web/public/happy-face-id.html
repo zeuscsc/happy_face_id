@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="mediapipe/face_mesh.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/knn-classifier"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link href="css/face-id.css" rel="stylesheet" />
+  <link href="css/profile.css" rel="stylesheet" />
+  <link href="css/loading.css" rel="stylesheet" />
+  <title>Happy Face Id</title>
+</head>
+
+<body>
+  <div class="lock">
+    <div class="content">
+      <h1>Please Smile</h1><br><h4>and keep turning your face left and right.</h4>
+      <div class="videos">
+        <video class="input_video"></video>
+        <canvas class="output_canvas" width="1280px" height="720px"></canvas>
+        <div class="training">
+          <button class="add_train_samples">Add Left Smile Train Samples</button>
+          <button class="add_train_samples">Add Right Smile Train Samples</button><br>
+          <button class="add_train_samples">Add Left Normal Train Samples</button>
+          <button class="add_train_samples">Add Right Normal Train Samples</button>
+          <button class="add_train_samples">Add Mid Smile Train Samples</button>
+          <button class="add_train_samples">Add Mid Normal Train Samples</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="profile-container">
+    <div class="padding">
+      <div class="col-md-8">
+          <!-- Column -->
+          <div class="card"> <img class="card-img-top" id="profile_banner" src="profiles/Zeus-Banner2.jpg" alt="Card image cap">
+              <div class="card-body little-profile text-center">
+                  <div class="pro-img" ><img id="profile" src="profiles/Zeus2.jpg" alt="user"></div>
+                  <h3 class="m-b-0"  id="username">Unknown</h3>
+                  <p id="job_title">Unknown</p> <a href="javascript:void(0)" class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Follow</a>
+                  <div class="row text-center m-t-20">
+                      <div class="col-lg-4 col-md-4 m-t-20">
+                          <h3 class="m-b-0 font-light" id="articles_count">NAN</h3><small>Articles</small>
+                      </div>
+                      <div class="col-lg-4 col-md-4 m-t-20">
+                          <h3 class="m-b-0 font-light" id="followers_count">NAN</h3><small>Followers</small>
+                      </div>
+                      <div class="col-lg-4 col-md-4 m-t-20">
+                          <h3 class="m-b-0 font-light" id="following_count">NAN</h3><small>Following</small>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="loading_screen">
+    <div>
+      <div class="loader">
+        <svg viewBox="0 0 80 80">
+            <circle id="test" cx="40" cy="40" r="32"></circle>
+        </svg>
+      </div>
+      
+      <div class="loader triangle">
+        <svg viewBox="0 0 86 80">
+            <polygon points="43 8 79 72 7 72"></polygon>
+        </svg>
+      </div>
+      
+      <div class="loader">
+        <svg viewBox="0 0 80 80">
+            <rect x="8" y="8" width="64" height="64"></rect>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <script src="js/training-samples.js"></script>
+  <script src="js/face-id.js"></script>
+</body>
+</html>

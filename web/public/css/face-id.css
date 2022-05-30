@@ -1,14 +1,10 @@
 .input_video{
-    /* display:none; */
-    position: fixed;
+    display:block;
+    /* position: fixed; */
     width: 480px; 
     height:288px;
     transform: scaleX(-100%);
-}
-.container{
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
+    z-index: 4;
 }
 .output_canvas{
     display:none;
@@ -28,12 +24,20 @@ body{
     width: 100vw;
     height: 100vh;
     background-color:black;
+    z-index: 2;
 }
-.lock h1{
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color:white;
+.lock .content{
     position: fixed;
     left: 50vw;
     top: 50vh;
     transform: translate(-50%,-50%);
+    text-align: center;
+}
+.lock h1{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color:white;
+}
+.lock h4{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color:lightgray;
 }
